@@ -28,7 +28,7 @@ let item = "Enter one of the following colors: red, white, blue.";
 const form = () => {
   return `
   <body>
-  <p style="color: ${item}; font-weight: bold; font-size: 28px;">${item}</p>
+  <p style="color: ${item}; font-weight: bold; font-size: 28px;">Color entered: ${item}</p>
   <form method="POST">
   <input name="item"></input>
   <button type="submit">Submit</button>
