@@ -1,55 +1,68 @@
 const express = require('express');
-const { products } = require('./data');
 
 const app = express();
 
-app.use(express.static('./public'))
+const logger = (req, res, next) => {
+    const method = req.method;
+    const url = req.url;
+    const time = new Date().getFullYear();
+    console.log(method, url, time);
+    next();
+};
 
-app.get('/api/v1/products/:productID', (req, res) => {
-    const { productID } = req.params;
-    const currProduct = products.find((product) => product.id === parseInt(productID));
-    if (!currProduct) {
-        return res.status(404).json({ message: 'That product was not found' })
-    }
-    res.json(currProduct)
-})
+app.use(logger);
 
-app.get('/api/v1/products', (req, res) => {
-    return res.json(products);
-})
-
-app.get('/api/v1/query', (req, res) => {
-    const { search, maxPrice, limit } = req.query;
-    console.log(search, limit);
-
-    let sortedProducts = [...products];     // Initialize
-
-    if (search) {
-        sortedProducts = sortedProducts.filter((product) => {
-            return product.name.startsWith(search)
-        })
-    }
-    if (maxPrice) {
-        sortedProducts = sortedProducts.filter((product) => product.price <= Number(maxPrice))
-    }
-    if (limit) {
-        sortedProducts = sortedProducts.slice(0, parseInt(limit));
-    }
-    if (sortedProducts.length < 1) {
-        res.status(200).json({ success: true, data: [] })
-    }
-
-    return res.status(200).json(sortedProducts);
-})
-
-app.get('/api/v1/test', (req, res) => {
-    return res.json({ message: "It worked!" });
-})
-
-app.all('*', (req, res) => {
-    return res.status(404).send('Resource not found')
-})
+app.get('/', (req, res) => {
+    return res.send('Home page');
+});
 
 app.listen(3000, () => {
-    console.log('Listening to port 3000');
+    console.log('Listening on port 3000...');
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const express = require('express');
+// const logger = require('./logger');
+// const authorize = require('./authorize');
+
+// const app = express();
+
+// // request => middleware => response
+// app.use([authorize, logger]);
+
+// app.get('/', (req, res) => {
+//     res.send('Home page');
+// });
+
+// app.get('/about', (req, res) => {
+//     res.send('About page');
+// });
+
+// app.get('/api/products', (req, res) => {
+//     res.send('Products Page');
+// });
+
+// app.get('/api/items', (req, res) => {
+//     console.log(req.user);
+//     res.send('Items page');
+// });
+
+// app.get('*', (req, res) => {
+//     res.status(404).send('404 Resource not found');
+// });
+
+// app.listen(3000, () => {
+//     console.log('Listening on port 3000...');
+// });
