@@ -1,0 +1,14 @@
+1. The asyncWrapper middleware function was created so that the controller doesn't have repeatedly do a 'try/catch'.
+
+2. Completed code to send the status code and an error message back to the user when they request the URL for a task that does not exist:
+
+const getTask = asyncWrapper(async (req, res, next) => {  
+  const { id: taskID } = req.params;  
+  const task = await Task.findOne({ _id: taskID });  
+  if (!task) {  
+    /* ----- Added code -----
+    return next(createCustomError(`No task with id: ${taskID}`, 404));
+       ----- Added code ----- */
+  }  
+  res.status(200).json({ task });  
+});  
