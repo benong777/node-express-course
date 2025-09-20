@@ -14,7 +14,6 @@ const login = async (req, res) => {
   if (!username || !password) {
     throw new BadRequestError('Please provide email and password');
   }
-  console.log(username, password);
 
   //-- Now with username info, we can proceed with JWT
   const id = new Date();    // just for demo, normally provided by Database
