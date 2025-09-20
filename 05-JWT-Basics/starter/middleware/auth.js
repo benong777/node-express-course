@@ -17,7 +17,7 @@ const authenticationMiddleware = (req, res, next) => {
     req.user = { id, username };
     next();   // Pass to the next middleware
   } catch(error) {
-      throw new UnauthenticatedError('Not authorized to access this route.');
+      throw new UnauthenticatedError('Token could not be verified.');
   }
 }
 
